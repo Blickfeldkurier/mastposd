@@ -41,11 +41,12 @@ def register_app(args):
             is_correct = True
 
     (client_id, client_secret) = Mastodon.create_app('mastposd', scopes=['read'], api_base_url=base_url)
-    config["mastodon"]["client_id"] = client_id
-    config["mastodon"]["client_secret"] = client_secret
     api = Mastodon(client_id, client_secret, api_base_url=base_url)
     token = api.log_in(email, passwd, scopes=["read"])
-    config["mastodon"]["access_token"] = token
+    config["mastodon"] = {"base_url":base_url,
+                          "client_id":client_id,
+                          "client_secret":client_secret,
+                          "access_token":token}
     print("Wrote Ini File to: " + args.config + "\n")
     with open(args.config, 'w') as configfile:
         config.write(configfile)
